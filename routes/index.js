@@ -1,15 +1,10 @@
 var express = require('express');
 var router = express.Router();
 
-var path = require('path');
-
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'My World!' });
+  // res.sendfile(__dirname + '/../index.html');
+  res.render('index', { title: 'IoT hub' });
 });
-// router.get('/game', function(req, res, next) {
-// 	res.sendFile(path.join(__dirname, '../public', 'game.html'));
-// });
-
 
 module.exports = router;

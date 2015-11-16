@@ -1,17 +1,17 @@
+// express 4
 var express = require('express');
+var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var app = express();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
+var app = express();
 
-var path = require('path');
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -24,8 +24,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// no route for socket.io
+// app.get('/', function (req, res) {
+//   res.sendfile(__dirname + '/index.html');
+// });
+
+// routes for express
 app.use('/', routes);
-app.use('/game', users);
+app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -58,17 +64,6 @@ app.use(function(err, req, res, next) {
   });
 });
 
-io.on('connection', function(socket){
-  socket.on('playerMoved', function(movement){
-    socket.broadcast.emit('playerMoved', movement);
-    console.log('playerMoved: ' + movement.id);
-  });
-});
 
-io.on('connection', function(socket){
-  console.log('a user connected');
-   socket.on('disconnect', function(){
-    console.log('user disconnected');
-  });
-});
 module.exports = app;
+
