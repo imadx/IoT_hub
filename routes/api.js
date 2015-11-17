@@ -1,6 +1,16 @@
 var express = require('express');
 var router = express.Router();
 
+//read event host 
+var fs = require('fs');
+var eventApiUrl = "";
+fs.readFile('public/eventsApi.config', 'utf8', function (err,data) {
+  if (err) {
+    return console.log(err);
+  }
+  eventApiUrl = data;
+  console.log(data);
+});
 
 // library to handle requests
 var request = require('request');
@@ -14,14 +24,14 @@ router.get('/event', function(req, res, next) {
 	console.log('event controller..');
 
 	request({
-	    url: 'http://localhost:3000/testEvent', //URL to hit
+	    url: eventApiUrl, //'http://localhost:3000/testEvent', //URL to hit
 	    //qs: {from: 'event api', time: +new Date()}, //Query string data
 	    method: 'POST',
 	    //Lets post the following key/values as form
 	    json: {
-	        user_id: 1,
-	        event_id: 2,
-	        event_param: 3
+	        user_id: user_id,
+	        event_id: event_id,
+	        event_param: event_param
 	    }
 	}, function(error, response, body){
 	    if(error) {
